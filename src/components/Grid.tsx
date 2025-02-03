@@ -7,7 +7,6 @@ import { bfs } from "../algorithms/bfs";
 import { dfs } from "../algorithms/dfs";
 import { dijkstra } from "../algorithms/dijkstra";
 import { aStar } from "../algorithms/astar";
-import { getNeighbors } from "../utils/helpers";
 
 const GRID_SIZE = 20;
 
@@ -21,6 +20,7 @@ export default function Grid() {
   const [mouseDown, setMouseDown] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string>("");
 
+  // Enable Mouse Click & Dragging for Walls
   useEffect(() => {
     const handleMouseUp = () => setMouseDown(false);
     window.addEventListener("mouseup", handleMouseUp);
@@ -101,9 +101,21 @@ export default function Grid() {
     <div className="flex flex-col items-center">
       <Dropdown selectedAlgorithm={selectedAlgorithm} setSelectedAlgorithm={setSelectedAlgorithm} />
       <Controls selectedAlgorithm={selectedAlgorithm} isPathfinding={isPathfinding} startSearch={startSearch} />
-      <div className="grid grid-cols-20 gap-[1px] bg-gray-300 p-2 border border-gray-500">
+      <div
+        className="grid grid-cols-20 gap-[1px] bg-gray-300 p-2 border border-gray-500"
+        onMouseDown={() => setMouseDown(true)}
+      >
         {grid.map((cell, index) => (
-          <div key={index} className={`w-6 h-6 border cursor-pointer ${cell === "wall" ? "bg-black" : ""}`} />
+          <div
+            key={index}
+            className={`w-6 h-6 border cursor-pointer ${
+              cell === "wall" ? "bg-black" : ""
+            } ${cell === "start" ? "bg-green-500" : ""} ${cell === "end" ? "bg-red-500" : ""} ${
+              cell === "path" ? "bg-yellow-500" : ""
+            }`}
+            onClick={() => handleCellClick(index)}
+            onMouseEnter={() => handleMouseEnter(index)}
+          />
         ))}
       </div>
     </div>

@@ -8,7 +8,7 @@ type Props = {
 export default function Dropdown({ selectedAlgorithm, setSelectedAlgorithm }: Props) {
   return (
     <select
-      className="mb-4 px-4 py-2 border rounded-md"
+      className="mb-4 px-4 py-2 border rounded-md text-black bg-white"
       value={selectedAlgorithm}
       onChange={(e) => setSelectedAlgorithm(e.target.value)}
     >
