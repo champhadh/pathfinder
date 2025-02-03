@@ -4,16 +4,32 @@ type Props = {
   selectedAlgorithm: string;
   isPathfinding: boolean;
   startSearch: () => void;
+  resetGrid: () => void;
 };
 
-export default function Controls({ selectedAlgorithm, isPathfinding, startSearch }: Props) {
+export default function Controls({ selectedAlgorithm, isPathfinding, startSearch, resetGrid }: Props) {
   return (
-    <button
-      className="mb-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400"
-      onClick={startSearch}
-      disabled={isPathfinding || !selectedAlgorithm}
-    >
-      Start Search
-    </button>
+    <div className="flex gap-4 mb-4">
+      {/* Start Search Button */}
+      <button
+        className={`px-6 py-2 rounded-md text-white transition ${
+          isPathfinding || !selectedAlgorithm
+            ? "bg-gray-500 cursor-not-allowed" // Disabled button (gray)
+            : "bg-black hover:bg-gray-800"
+        }`}
+        onClick={startSearch}
+        disabled={isPathfinding || !selectedAlgorithm}
+      >
+        Start Search
+      </button>
+
+      {/* Reset Grid Button */}
+      <button
+        className="px-6 py-2 bg-red-600 hover:bg-red-800 text-white rounded-md transition"
+        onClick={resetGrid}
+      >
+        Reset Grid
+      </button>
+    </div>
   );
 }

@@ -1,8 +1,14 @@
 import { getNeighbors } from "../utils/helpers";
 
-export const bfs = (startIndex: number, endIndex: number, grid: string[], animatePath: (path: number[]) => void) => {
+export const bfs = (
+  startIndex: number,
+  endIndex: number,
+  grid: string[],
+  animateSearch: (visitedNodesInOrder: number[], shortestPath: number[]) => void
+) => {
   const queue = [[startIndex]];
   const visited = new Set<number>();
+  const visitedNodesInOrder: number[] = [];
 
   while (queue.length > 0) {
     const path = queue.shift()!;
@@ -10,9 +16,10 @@ export const bfs = (startIndex: number, endIndex: number, grid: string[], animat
 
     if (visited.has(node)) continue;
     visited.add(node);
+    visitedNodesInOrder.push(node);
 
     if (node === endIndex) {
-      animatePath(path);
+      animateSearch(visitedNodesInOrder, path);
       return;
     }
 

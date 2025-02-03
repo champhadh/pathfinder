@@ -3,20 +3,21 @@ import { getNeighbors } from "../utils/helpers";
 const heuristic = (a: number, b: number, gridSize: number) => {
   const [rowA, colA] = [Math.floor(a / gridSize), a % gridSize];
   const [rowB, colB] = [Math.floor(b / gridSize), b % gridSize];
-  return Math.abs(rowA - rowB) + Math.abs(colA - colB); // Manhattan Distance
+  return Math.abs(rowA - rowB) + Math.abs(colA - colB);
 };
 
 export const aStar = (
   startIndex: number,
   endIndex: number,
   grid: string[],
-  animatePath: (path: number[]) => void
+  animateSearch: (visitedNodesInOrder: number[], shortestPath: number[]) => void
 ) => {
   const gridSize = Math.sqrt(grid.length);
   const openSet: [number, number][] = [[startIndex, 0]];
   const cameFrom: Record<number, number | null> = {};
   const gScore: Record<number, number> = {};
   const fScore: Record<number, number> = {};
+  const visitedNodesInOrder: number[] = [];
 
   for (let i = 0; i < grid.length; i++) {
     gScore[i] = Infinity;
@@ -27,8 +28,9 @@ export const aStar = (
   fScore[startIndex] = heuristic(startIndex, endIndex, gridSize);
 
   while (openSet.length > 0) {
-    openSet.sort((a, b) => fScore[a[0]] - fScore[b[0]]); // Sort by lowest fScore
+    openSet.sort((a, b) => fScore[a[0]] - fScore[b[0]]);
     const [current] = openSet.shift()!;
+    visitedNodesInOrder.push(current);
 
     if (current === endIndex) {
       const path = [];
@@ -38,7 +40,7 @@ export const aStar = (
         temp = cameFrom[temp]!;
       }
       path.push(startIndex);
-      animatePath(path.reverse());
+      animateSearch(visitedNodesInOrder, path.reverse());
       return;
     }
 

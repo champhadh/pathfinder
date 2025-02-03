@@ -4,10 +4,11 @@ export const dfs = (
   startIndex: number,
   endIndex: number,
   grid: string[],
-  animatePath: (path: number[]) => void
+  animateSearch: (visitedNodesInOrder: number[], shortestPath: number[]) => void
 ) => {
   const stack = [[startIndex]];
   const visited = new Set<number>();
+  const visitedNodesInOrder: number[] = [];
 
   while (stack.length > 0) {
     const path = stack.pop()!;
@@ -15,9 +16,10 @@ export const dfs = (
 
     if (visited.has(node)) continue;
     visited.add(node);
+    visitedNodesInOrder.push(node);
 
     if (node === endIndex) {
-      animatePath(path);
+      animateSearch(visitedNodesInOrder, path);
       return;
     }
 
