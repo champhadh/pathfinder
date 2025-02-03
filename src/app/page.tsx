@@ -1,6 +1,4 @@
-import Grid from "../components/Grid";
-
-
+import Grid from "@/components/Grid"; // Use alias instead of relative import
 
 export default function Home() {
   return (
